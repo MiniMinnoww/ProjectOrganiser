@@ -21,7 +21,7 @@ class Note(Tile.Tile):
         self.widget.bind("<ButtonRelease-3>", lambda _: main.OnArrowStop())
 
         # Add dragging capability
-        self.dragManager = DragManager()
+        self.dragManager = DragManager(self.widget)
         self.dragManager.AddDraggable(self.widget)
 
     def Delete(self, _):
@@ -56,7 +56,7 @@ class Board(Tile.Tile):
         self.widget.bind("<Double-Button-1>", self.Open, True)
 
         # Add dragging capability
-        self.dragManager = DragManager()
+        self.dragManager = DragManager(self.widget)
         self.dragManager.AddDraggable(self.widget)
 
     def Delete(self, _):
@@ -70,6 +70,7 @@ class Board(Tile.Tile):
     def Open(self, _):
         # TODO: Add way to open board
         pass
+
 
 class Image(Tile.Tile):
     def __init__(self, root, main, image):
@@ -95,7 +96,7 @@ class Image(Tile.Tile):
         self.widget.bind("<ButtonPress-1>", self.Select, True)
 
         # Add dragging capability
-        self.dragManager = DragManager()
+        self.dragManager = DragManager(self.widget)
         self.dragManager.AddDraggable(self.widget)
 
     def Delete(self, _):
@@ -125,7 +126,7 @@ class Header(Tile.Tile):
         self.widget.bind("<ButtonRelease-3>", lambda _: main.OnArrowStop())
 
         # Add dragging capability
-        self.dragManager = DragManager()
+        self.dragManager = DragManager(self.widget)
         self.dragManager.AddDraggable(self.widget)
 
     def Delete(self, _):
@@ -133,6 +134,45 @@ class Header(Tile.Tile):
         if self.widget.get() == "":
             Tile.tiles.pop(Tile.tiles.index(self))
             self.widget.destroy()
+
+
+class ClassDiagram(Tile.Tile):
+    def __init__(self, root, main):
+        super(ClassDiagram, self).__init__()
+
+        self.root = root
+
+        # The main widget is labelled 'self.widget'
+        self.widget = tk.Frame(self.root, relief=tk.RIDGE, bg="#FFFFFF")
+        self.widget.place(x=500, y=500, height=800, width=200)
+
+        self.header = tk.Entry(self.widget, relief=tk.RIDGE, font="Helvetica 20 bold", justify=tk.CENTER)
+        self.header.pack()
+
+        self.fields = tk.Text(self.widget, relief=tk.RIDGE, wrap=tk.WORD)
+        self.fields.pack()
+
+        self.methods = tk.Text(self.widget, relief=tk.RIDGE, wrap=tk.WORD)
+        self.methods.pack()
+
+        # Add delete option
+        self.widget.bind("<Delete>", self.Delete)
+
+        # Add right click detection to add arrows
+        self.widget.bind("<ButtonPress-3>", lambda _: main.OnArrowStart(self.widget))
+        self.widget.bind("<ButtonRelease-3>", lambda _: main.OnArrowStop())
+
+        # Add dragging capability
+        self.dragManager = DragManager(self.widget)
+        self.dragManager.AddDraggable(self.widget)
+        self.dragManager.AddDraggable(self.header)
+        self.dragManager.AddDraggable(self.fields)
+        self.dragManager.AddDraggable(self.methods)
+
+    def Delete(self, _):
+        # Delete
+        Tile.tiles.pop(Tile.tiles.index(self))
+        self.widget.destroy()
 
 
 class JoinedArrow:

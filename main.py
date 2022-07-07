@@ -5,7 +5,6 @@ This is a project planning desktop app in python using tkinter, which is aimed a
 
 import tkinter as tk
 from tkinter import filedialog as fd
-import math
 from PIL import Image,ImageTk
 
 import Tiles
@@ -25,7 +24,6 @@ from info import GetSetting
 # Tiles to make:
     # UML class diagrams
     # Flow chart symbols
-    # Images
     # 3D models?
     # Links
     # To-Do lists
@@ -41,6 +39,7 @@ from info import GetSetting
     # Make class diagrams have a 'colour' mode, which replaces things like +/-/# and other characters with colours for a nicer view
     # Allow customisation of colours to the top of tiles
     # Allow labels to arrows
+    # Allow resizing of images
 
 class Main:
     def __init__(self):
@@ -73,6 +72,9 @@ class Main:
         self.imageButton = tk.Button(self.toolbar, text="Image", command=lambda: self.CreateImage())
         self.imageButton.pack()
 
+        self.classDiagramButton = tk.Button(self.toolbar, text="Class Diagram", command=lambda: self.CreateClassDiagram())
+        self.classDiagramButton.pack()
+
         # Handler for arrows
         self.arrowHandler = ArrowHandler.ArrowHandler(self.canvas)
 
@@ -97,6 +99,12 @@ class Main:
         _image.thumbnail((300, 300))
         image = ImageTk.PhotoImage(_image)
         Tile.tiles.append(Tiles.Image(self.root, self, image))
+
+    def CreateClassDiagram(self):
+        # Special case for creating a class diagram
+        # We want to add a way to input all the methods and fields into a GUI, then construct the diagram ourselves
+        # TODO: Class diagram GUI
+        self.Create(Tiles.ClassDiagram)
 
     def Update(self):
         # TODO: Only call when widgets are moved
