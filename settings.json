@@ -3,5 +3,12 @@
   {
     "background": "#DDDDDD",
     "toolbar": "#DDDDDD"
+  },
+  "files":
+  {
+    "extensions":
+    {
+      "images": ["Image", ".png .gif"]
+    }
   }
 }

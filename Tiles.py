@@ -71,6 +71,41 @@ class Board(Tile.Tile):
         # TODO: Add way to open board
         pass
 
+class Image(Tile.Tile):
+    def __init__(self, root, main, image):
+        super(Image, self).__init__()
+        self.root = root
+        self.image = image
+        print(type(self.image))
+
+        # All main widgets are labelled 'self.widget'
+        self.widget = tk.Label(self.root, relief=tk.RIDGE, image=self.image)
+        self.widget.place(x=500, y=500)
+
+        # TODO: Add single click functionality to select
+
+        # Add delete option
+        self.widget.bind("<Delete>", self.Delete)
+
+        # Add right click detection to add arrows
+        self.widget.bind("<ButtonPress-3>", lambda _: main.OnArrowStart(self.widget))
+        self.widget.bind("<ButtonRelease-3>", lambda _: main.OnArrowStop())
+
+        # Detect selecting
+        self.widget.bind("<ButtonPress-1>", self.Select, True)
+
+        # Add dragging capability
+        self.dragManager = DragManager()
+        self.dragManager.AddDraggable(self.widget)
+
+    def Delete(self, _):
+        Tile.tiles.pop(Tile.tiles.index(self))
+        self.widget.destroy()
+
+    def Select(self, _):
+        # TODO: Add select option
+        pass
+
 
 class Header(Tile.Tile):
     def __init__(self, root, main):

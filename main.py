@@ -4,9 +4,15 @@ This is a project planning desktop app in python using tkinter, which is aimed a
 """
 
 import tkinter as tk
+from tkinter import filedialog as fd
+import math
+from PIL import Image,ImageTk
+
 import Tiles
 import Tile
+
 import ArrowHandler
+
 from info import GetSetting
 
 # To-Do list.
@@ -15,6 +21,7 @@ from info import GetSetting
     # Allow multiple boards
     # Save/Load system
     # Export board to pdf
+    # Add settings in toolbar when widget selected
 # Tiles to make:
     # UML class diagrams
     # Flow chart symbols
@@ -27,7 +34,6 @@ from info import GetSetting
     # Document links
     # Audio
     # Video
-    # Headers
     # Maps?
     # Drawings
     # Logic gate simulation (could be cool?)
@@ -64,6 +70,9 @@ class Main:
         self.headerButton = tk.Button(self.toolbar, text="Header", command=lambda: self.Create(Tiles.Header))
         self.headerButton.pack()
 
+        self.imageButton = tk.Button(self.toolbar, text="Image", command=lambda: self.CreateImage())
+        self.imageButton.pack()
+
         # Handler for arrows
         self.arrowHandler = ArrowHandler.ArrowHandler(self.canvas)
 
@@ -75,6 +84,19 @@ class Main:
     def Create(self, tile):
         # Create a tile
         Tile.tiles.append(tile(self.root, self))
+
+    def CreateImage(self):
+        # Special case for creating an image (we need a file select box to come up)
+
+        # File dialog come up
+        allowedFileExtensions = tuple(GetSetting("files.extensions.images"))
+        filePath = fd.askopenfilename(filetypes=[allowedFileExtensions])
+
+        # Now load the image
+        _image = Image.open(filePath)
+        _image.thumbnail((300, 300))
+        image = ImageTk.PhotoImage(_image)
+        Tile.tiles.append(Tiles.Image(self.root, self, image))
 
     def Update(self):
         # TODO: Only call when widgets are moved
