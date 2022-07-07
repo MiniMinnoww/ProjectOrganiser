@@ -1,8 +1,39 @@
+"""
+Read README.md for more info!
+This is a project planning desktop app in python using tkinter, which is aimed at programming projects.
+"""
+
 import tkinter as tk
 import Tiles
 import Tile
 import ArrowHandler
 
+# To-Do list.
+
+# Main stuff
+    # Allow multiple boards
+    # Save/Load system
+    # Export board to pdf
+# Tiles to make:
+    # UML class diagrams
+    # Flow chart symbols
+    # Images
+    # 3D models?
+    # Links
+    # To-Do lists
+    # Columns (to store other widgets)
+    # Colours
+    # Document links
+    # Audio
+    # Video
+    # Headers
+    # Maps?
+    # Drawings
+    # Logic gate simulation (could be cool?)
+# Other touches:
+    # Make class diagrams have a 'colour' mode, which replaces things like +/-/# and other characters with colours for a nicer view
+    # Allow customisation of colours to the top of tiles
+    # Allow labels to arrows
 
 class Main:
     def __init__(self):
