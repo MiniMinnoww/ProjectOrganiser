@@ -2,9 +2,9 @@ class DragManager:
     def AddDraggable(self, widget):
         # Add events to dragging, moving and dropping the tile
         # TODO: Make 1 central drag manager and not multiple for each tile (could use up more memory?)
-        widget.bind("<ButtonPress-1>", self.OnStart)
-        widget.bind("<B1-Motion>", self.OnDrag)
-        widget.bind("<ButtonRelease-1>", self.OnDrop)
+        widget.bind("<ButtonPress-1>", self.OnStart, True)
+        widget.bind("<B1-Motion>", self.OnDrag, True)
+        widget.bind("<ButtonRelease-1>", self.OnDrop, True)
 
         # Used to calculate offset for where user clicked on the widget compared to its (0,0) point
         self.offsetX = 0

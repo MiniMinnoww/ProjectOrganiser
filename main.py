@@ -7,6 +7,7 @@ import tkinter as tk
 import Tiles
 import Tile
 import ArrowHandler
+from info import GetSetting
 
 # To-Do list.
 
@@ -40,24 +41,28 @@ class Main:
         # Initialise main window
         self.root = tk.Tk()
         self.root.title("Project Planner")
-        self.root.configure(bg="#DDDDDD")
+        self.root.configure(bg=GetSetting("colours.background"))
         self.root.state("zoomed")
 
         # Make a canvas where we can draw arrows on
-        self.canvas = tk.Canvas(bg="#DDDDDD")
+        self.canvas = tk.Canvas(bg=GetSetting("colours.background"))
         self.canvas.place(relx=0, rely=0, relheight=1, relwidth=1)
 
         # Bar at the side where you can drag and drop notes from
         # TODO: Make drag and drop from toolbar
-        self.toolbar = tk.Frame(self.root, bg="#DDDDDD", highlightbackground="#444444", highlightthickness=2)
+        self.toolbar = tk.Frame(self.root, bg=GetSetting("colours.toolbar"), highlightbackground="#444444", highlightthickness=2)
         self.toolbar.place(relx=0, rely=0, relheight=1, relwidth=0.1)
 
         # Create toolbar options
+        # TODO: Add icons for these
         self.noteButton = tk.Button(self.toolbar, text="Note", command=lambda: self.Create(Tiles.Note))
         self.noteButton.pack()
 
-        self.boardButton = tk.Button(self.toolbar, text="Board", command=lambda: self.Create(Tiles.BoardTile))
+        self.boardButton = tk.Button(self.toolbar, text="Board", command=lambda: self.Create(Tiles.Board))
         self.boardButton.pack()
+
+        self.headerButton = tk.Button(self.toolbar, text="Header", command=lambda: self.Create(Tiles.Header))
+        self.headerButton.pack()
 
         # Handler for arrows
         self.arrowHandler = ArrowHandler.ArrowHandler(self.canvas)
