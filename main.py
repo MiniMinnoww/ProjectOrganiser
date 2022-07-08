@@ -7,8 +7,8 @@ import tkinter as tk
 from tkinter import filedialog as fd
 from PIL import Image,ImageTk
 
-import Tiles
-import Tile
+import tiles
+import tile
 
 import arrow_handler
 from class_diagram_gui import ClassDiagramCreatorGUI
@@ -62,13 +62,13 @@ class Main:
 
         # Create toolbar options
         # TODO: Add icons for these
-        self.noteButton = tk.Button(self.toolbar, text="Note", command=lambda: self.Create(Tiles.Note))
+        self.noteButton = tk.Button(self.toolbar, text="Note", command=lambda: self.Create(tiles.Note))
         self.noteButton.pack()
 
-        self.boardButton = tk.Button(self.toolbar, text="Board", command=lambda: self.Create(Tiles.Board))
+        self.boardButton = tk.Button(self.toolbar, text="Board", command=lambda: self.Create(tiles.Board))
         self.boardButton.pack()
 
-        self.headerButton = tk.Button(self.toolbar, text="Header", command=lambda: self.Create(Tiles.Header))
+        self.headerButton = tk.Button(self.toolbar, text="Header", command=lambda: self.Create(tiles.Header))
         self.headerButton.pack()
 
         self.imageButton = tk.Button(self.toolbar, text="Image", command=lambda: self.CreateImage())
@@ -87,7 +87,7 @@ class Main:
 
     def Create(self, tile):
         # Create a tile
-        Tile.tiles.append(tile(self.root, self))
+        tile.tiles.append(tile(self.root, self))
 
     def CreateImage(self):
         # Special case for creating an image (we need a file select box to come up)
@@ -100,7 +100,7 @@ class Main:
         _image = Image.open(filePath)
         _image.thumbnail((300, 300))
         image = ImageTk.PhotoImage(_image)
-        Tile.tiles.append(Tiles.Image(self.root, self, image))
+        tile.tiles.append(tiles.Image(self.root, self, image))
 
     def CreateClassDiagram(self):
         # Special case for creating a class diagram

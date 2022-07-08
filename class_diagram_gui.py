@@ -1,7 +1,7 @@
 import tkinter as tk
 from info import GetSetting
-import Tiles
-from Tile import tiles
+import tiles
+from tile import tiles
 
 class ClassDiagramCreatorGUI(tk.Toplevel):
     def __init__(self, root, main):
@@ -144,7 +144,7 @@ class ClassDiagramCreatorGUI(tk.Toplevel):
         for method in self.methods: methods.append(method.__repr__())
 
         # Create Class Diagram
-        tiles.append(Tiles.ClassDiagram(self.root, self.main, self.title_entry.get(), fields, methods))
+        tiles.append(tiles.ClassDiagram(self.root, self.main, self.title_entry.get(), fields, methods))
 
         # Delete TopLevel
         self.destroy()

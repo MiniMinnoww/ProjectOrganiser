@@ -1,9 +1,9 @@
-import Tile
-from DraggableObject import *
+import tile
+from draggable_object import *
 import tkinter as tk
 from info import GetSetting
 
-class Note(Tile.Tile):
+class Note(tile.Tile):
     def __init__(self, root, main):
         super(Note, self).__init__()
 
@@ -27,11 +27,11 @@ class Note(Tile.Tile):
     def Delete(self, _):
         # Check if delete is to delete the tile, or just the text (by seeing if there is text current in it)
         if self.widget.get() == "":
-            Tile.tiles.pop(Tile.tiles.index(self))
+            tile.tiles.pop(tile.tiles.index(self))
             self.widget.destroy()
 
 
-class Board(Tile.Tile):
+class Board(tile.Tile):
     def __init__(self, root, main):
         super(Board, self).__init__()
         self.root = root
@@ -60,7 +60,7 @@ class Board(Tile.Tile):
         self.dragManager.AddDraggable(self.widget)
 
     def Delete(self, _):
-        Tile.tiles.pop(Tile.tiles.index(self))
+        tile.tiles.pop(tile.tiles.index(self))
         self.widget.destroy()
 
     def Select(self, _):
@@ -72,7 +72,7 @@ class Board(Tile.Tile):
         pass
 
 
-class Image(Tile.Tile):
+class Image(tile.Tile):
     def __init__(self, root, main, image):
         super(Image, self).__init__()
         self.root = root
@@ -100,7 +100,7 @@ class Image(Tile.Tile):
         self.dragManager.AddDraggable(self.widget)
 
     def Delete(self, _):
-        Tile.tiles.pop(Tile.tiles.index(self))
+        tile.tiles.pop(tile.tiles.index(self))
         self.widget.destroy()
 
     def Select(self, _):
@@ -108,7 +108,7 @@ class Image(Tile.Tile):
         pass
 
 
-class Header(Tile.Tile):
+class Header(tile.Tile):
     def __init__(self, root, main):
         super(Header, self).__init__()
 
@@ -132,11 +132,11 @@ class Header(Tile.Tile):
     def Delete(self, _):
         # Check if delete is to delete the tile, or just the text (by seeing if there is text current in it)
         if self.widget.get() == "":
-            Tile.tiles.pop(Tile.tiles.index(self))
+            tile.tiles.pop(tile.tiles.index(self))
             self.widget.destroy()
 
 
-class ClassDiagram(Tile.Tile):
+class ClassDiagram(tile.Tile):
     def __init__(self, root, main, title, fields, methods):
         print(title)
         super(ClassDiagram, self).__init__()
@@ -176,7 +176,7 @@ class ClassDiagram(Tile.Tile):
 
     def Delete(self, _):
         # Delete
-        Tile.tiles.pop(Tile.tiles.index(self))
+        tile.tiles.pop(tile.tiles.index(self))
         self.widget.destroy()
 
 

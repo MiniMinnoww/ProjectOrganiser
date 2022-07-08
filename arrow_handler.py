@@ -1,4 +1,4 @@
-from Tiles import JoinedArrow
+from tiles import JoinedArrow
 import tkinter as tk
 
 
