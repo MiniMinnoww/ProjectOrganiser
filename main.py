@@ -52,6 +52,8 @@ class Main:
         self.root.configure(bg=GetSetting("colours.background"))
         self.root.state("zoomed")
 
+        self.root.protocol("WM_DELETE_WINDOW", lambda: self.Save(True))
+
         # Make a canvas where we can draw arrows on
         self.canvas = tk.Canvas(bg=GetSetting("colours.background"))
         self.canvas.place(relx=0, rely=0, relheight=1, relwidth=1)
@@ -86,8 +88,6 @@ class Main:
 
         # Update loop for arrows
         self.root.after(1, self.Update)
-
-        self.root.after(3000, self.Save)
 
         self.root.mainloop()
 
@@ -133,8 +133,9 @@ class Main:
         # Arrow has been stopped
         self.arrowHandler.ArrowEnd(self.root)
 
-    def Save(self):
+    def Save(self, close=False):
         save_load_manager.save_data()
+        if close: self.root.destroy()
 
 
 if __name__ == "__main__":

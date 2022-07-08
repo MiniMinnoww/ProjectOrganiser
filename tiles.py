@@ -56,6 +56,8 @@ class Board(tile.Tile):
         super(Board, self).__init__()
         self.root = root
 
+        self.ID = 1
+
         # All main widgets are labelled 'self.widget'
         self.widget = tk.Label(self.root, relief=tk.RIDGE, bg="#FFFFFF")
         self.widget.place(x=500, y=500, height=100, width=100)
@@ -90,6 +92,18 @@ class Board(tile.Tile):
     def Open(self, _):
         # TODO: Add way to open board
         pass
+
+    def get_save_info(self):
+        info = {
+            "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"])
+        }
+        return self.ID, info
+
+    def load_save_info(self, save):
+        # Position & Dimensions
+        self.widget.place_forget()
+        self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
 
 
 class Image(tile.Tile):
@@ -134,6 +148,8 @@ class Header(tile.Tile):
 
         self.root = root
 
+        self.ID = 3
+
         # All main widgets are labelled 'self.widget'
         self.widget = tk.Entry(self.root, relief=tk.GROOVE, bg=GetSetting("colours.background"), font="Helvetica 20 bold", justify=tk.CENTER)
         self.widget.place(x=500, y=500, height=50, width=200)
@@ -154,6 +170,23 @@ class Header(tile.Tile):
         if self.widget.get() == "":
             tile.tiles.pop(tile.tiles.index(self))
             self.widget.destroy()
+
+    def get_save_info(self):
+        info = {
+            "text": (self.widget.get()),
+            "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"])
+        }
+        return self.ID, info
+
+    def load_save_info(self, save):
+        # Text
+        self.widget.delete(0, tk.END)
+        self.widget.insert(0, save["text"])
+
+        # Position & Dimensions
+        self.widget.place_forget()
+        self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
 
 
 class ClassDiagram(tile.Tile):
