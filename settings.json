@@ -10,5 +10,11 @@
     {
       "images": ["Image", ".png .gif"]
     }
+  },
+  "enum":
+  {
+    "field-type": ["Private", "Protected", "Public"],
+    "class-type": ["Normal", "Abstract"],
+    "method-type": ["Virtual", "Protected", "Private", "Public", "Override"]
   }
 }

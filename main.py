@@ -10,7 +10,8 @@ from PIL import Image,ImageTk
 import Tiles
 import Tile
 
-import ArrowHandler
+import arrow_handler
+from class_diagram_gui import ClassDiagramCreatorGUI
 
 from info import GetSetting
 
@@ -40,6 +41,7 @@ from info import GetSetting
     # Allow customisation of colours to the top of tiles
     # Allow labels to arrows
     # Allow resizing of images
+    # Make text boxes auto resize
 
 class Main:
     def __init__(self):
@@ -76,7 +78,7 @@ class Main:
         self.classDiagramButton.pack()
 
         # Handler for arrows
-        self.arrowHandler = ArrowHandler.ArrowHandler(self.canvas)
+        self.arrowHandler = arrow_handler.ArrowHandler(self.canvas)
 
         # Update loop for arrows
         self.root.after(1, self.Update)
@@ -104,6 +106,7 @@ class Main:
         # Special case for creating a class diagram
         # We want to add a way to input all the methods and fields into a GUI, then construct the diagram ourselves
         # TODO: Class diagram GUI
+        gui = ClassDiagramCreatorGUI(self.root, self)
         self.Create(Tiles.ClassDiagram)
 
     def Update(self):
@@ -140,3 +143,4 @@ def ArrowPlace(widget):
 
 def ArrowEnd():
     main.OnArrowStop()
+

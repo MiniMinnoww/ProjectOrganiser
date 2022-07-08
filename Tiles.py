@@ -149,8 +149,8 @@ class ClassDiagram(Tile.Tile):
         self.header = tk.Entry(self.widget, relief=tk.RIDGE, font="Helvetica 20 bold", justify=tk.CENTER)
         self.header.pack()
 
-        self.fields = tk.Text(self.widget, relief=tk.RIDGE, wrap=tk.WORD)
-        self.fields.pack()
+        self.fields = tk.Text(self.widget, relief=tk.RIDGE)
+        self.fields.pack(expand=True, fill="both")
 
         self.methods = tk.Text(self.widget, relief=tk.RIDGE, wrap=tk.WORD)
         self.methods.pack()
