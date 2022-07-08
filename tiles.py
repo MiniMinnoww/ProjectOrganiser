@@ -3,11 +3,14 @@ from draggable_object import *
 import tkinter as tk
 from info import GetSetting
 
+# Each tile has a ID (self.ID) which is used for save load system.
+
 class Note(tile.Tile):
     def __init__(self, root, main):
         super(Note, self).__init__()
 
         self.root = root
+        self.ID = 0
 
         # All main widgets are labelled 'self.widget'
         self.widget = tk.Entry(self.root, relief=tk.RIDGE, bg="#FFFFFF")
@@ -29,6 +32,23 @@ class Note(tile.Tile):
         if self.widget.get() == "":
             tile.tiles.pop(tile.tiles.index(self))
             self.widget.destroy()
+
+    def get_save_info(self):
+        info = {
+            "text": self.widget.get(),
+            "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"])
+        }
+        return self.ID, info
+
+    def load_save_info(self, save):
+        # Text
+        self.widget.delete(0, tk.END)
+        self.widget.insert(0, save["text"])
+
+        # Position & Dimensions
+        self.widget.place_forget()
+        self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
 
 
 class Board(tile.Tile):

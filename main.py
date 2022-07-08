@@ -9,6 +9,7 @@ from PIL import Image,ImageTk
 
 import tiles
 import tile
+import save_load_manager
 
 import arrow_handler
 from class_diagram_gui import ClassDiagramCreatorGUI
@@ -80,14 +81,19 @@ class Main:
         # Handler for arrows
         self.arrowHandler = arrow_handler.ArrowHandler(self.canvas)
 
+        # Load save data
+        save_load_manager.load_data(self.root, self)
+
         # Update loop for arrows
         self.root.after(1, self.Update)
 
+        self.root.after(3000, self.Save)
+
         self.root.mainloop()
 
-    def Create(self, tile):
+    def Create(self, _tile):
         # Create a tile
-        tile.tiles.append(tile(self.root, self))
+        tile.tiles.append(_tile(self.root, self))
 
     def CreateImage(self):
         # Special case for creating an image (we need a file select box to come up)
@@ -126,6 +132,9 @@ class Main:
     def OnArrowStop(self):
         # Arrow has been stopped
         self.arrowHandler.ArrowEnd(self.root)
+
+    def Save(self):
+        save_load_manager.save_data()
 
 
 if __name__ == "__main__":
