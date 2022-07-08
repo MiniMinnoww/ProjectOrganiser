@@ -115,7 +115,7 @@ class Header(Tile.Tile):
         self.root = root
 
         # All main widgets are labelled 'self.widget'
-        self.widget = tk.Entry(self.root, relief=tk.RIDGE, bg=GetSetting("colours.background"), font="Helvetica 20 bold", justify=tk.CENTER)
+        self.widget = tk.Entry(self.root, relief=tk.GROOVE, bg=GetSetting("colours.background"), font="Helvetica 20 bold", justify=tk.CENTER)
         self.widget.place(x=500, y=500, height=50, width=200)
 
         # Add delete option
@@ -137,23 +137,28 @@ class Header(Tile.Tile):
 
 
 class ClassDiagram(Tile.Tile):
-    def __init__(self, root, main):
+    def __init__(self, root, main, title, fields, methods):
+        print(title)
         super(ClassDiagram, self).__init__()
 
         self.root = root
 
         # The main widget is labelled 'self.widget'
         self.widget = tk.Frame(self.root, relief=tk.RIDGE, bg="#FFFFFF")
-        self.widget.place(x=500, y=500, height=800, width=200)
+        self.widget.place(x=500, y=500, height=400, width=200)
 
-        self.header = tk.Entry(self.widget, relief=tk.RIDGE, font="Helvetica 20 bold", justify=tk.CENTER)
+        self.header = tk.Label(self.widget, text=title, relief=tk.FLAT, font="Helvetica 20 bold", justify=tk.CENTER, bg="#FFFFFF")
         self.header.pack()
 
-        self.fields = tk.Text(self.widget, relief=tk.RIDGE)
-        self.fields.pack(expand=True, fill="both")
+        self.fields = tk.Listbox(self.widget, relief=tk.RIDGE, width=50)
+        for field in fields:
+            self.fields.insert(tk.END, field)
+        self.fields.pack(fill=tk.BOTH, expand=True)
 
-        self.methods = tk.Text(self.widget, relief=tk.RIDGE, wrap=tk.WORD)
-        self.methods.pack()
+        self.methods = tk.Listbox(self.widget, relief=tk.RIDGE, width=50)
+        for method in methods:
+            self.methods.insert(tk.END, method)
+        self.methods.pack(fill=tk.BOTH, expand=True)
 
         # Add delete option
         self.widget.bind("<Delete>", self.Delete)

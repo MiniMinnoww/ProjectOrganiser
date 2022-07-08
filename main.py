@@ -106,8 +106,7 @@ class Main:
         # Special case for creating a class diagram
         # We want to add a way to input all the methods and fields into a GUI, then construct the diagram ourselves
         # TODO: Class diagram GUI
-        gui = ClassDiagramCreatorGUI(self.root, self)
-        self.Create(Tiles.ClassDiagram)
+        ClassDiagramCreatorGUI(self.root, self)
 
     def Update(self):
         # TODO: Only call when widgets are moved
