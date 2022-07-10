@@ -81,7 +81,7 @@ class Main:
         self.classDiagramButton.pack()
 
         # Handler for arrows
-        self.arrowHandler = arrow_handler.ArrowHandler(self.canvas)
+        self.arrowHandler = arrow_handler.ArrowHandler(self.canvas, self.root)
 
         # Load save data
         save_load_manager.load_data(self.root, self)
@@ -122,8 +122,8 @@ class Main:
         # Update arrows
         self.arrowHandler.Update()
 
-        # Re-update for 1 ms
-        self.root.after(1, self.Update)
+        # Re-update for 10 ms
+        self.root.after(10, self.Update)
 
     def OnArrowStart(self, widget):
         # Arrow has been initialised
@@ -134,7 +134,7 @@ class Main:
         self.arrowHandler.ArrowEnd(self.root)
 
     def Save(self, close=False):
-        save_load_manager.save_data()
+        save_load_manager.save_data(self)
         if close: self.root.destroy()
 
 

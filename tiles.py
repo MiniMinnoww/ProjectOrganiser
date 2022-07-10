@@ -1,7 +1,9 @@
 import tile
 from draggable_object import *
+import tkinter2 as tk2
 import tkinter as tk
 from info import GetSetting
+import uid_manager
 
 # Each tile has a ID (self.ID) which is used for save load system.
 
@@ -11,9 +13,10 @@ class Note(tile.Tile):
 
         self.root = root
         self.ID = 0
+        self.UID = uid_manager.get_uid()
 
         # All main widgets are labelled 'self.widget'
-        self.widget = tk.Entry(self.root, relief=tk.RIDGE, bg="#FFFFFF")
+        self.widget = tk2.Entry(self.root, self, relief=tk.RIDGE, bg="#FFFFFF")
         self.widget.place(x=500, y=500, height=50, width=200)
 
         # Add delete option
@@ -37,7 +40,8 @@ class Note(tile.Tile):
         info = {
             "text": self.widget.get(),
             "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
-            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"])
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"]),
+            "uid": self.UID
         }
         return self.ID, info
 
@@ -45,6 +49,9 @@ class Note(tile.Tile):
         # Text
         self.widget.delete(0, tk.END)
         self.widget.insert(0, save["text"])
+
+        # UID
+        self.UID = save["uid"]
 
         # Position & Dimensions
         self.widget.place_forget()
@@ -57,9 +64,10 @@ class Board(tile.Tile):
         self.root = root
 
         self.ID = 1
+        self.UID = uid_manager.get_uid()
 
         # All main widgets are labelled 'self.widget'
-        self.widget = tk.Label(self.root, relief=tk.RIDGE, bg="#FFFFFF")
+        self.widget = tk2.Label(self.root, self, relief=tk.RIDGE, bg="#FFFFFF")
         self.widget.place(x=500, y=500, height=100, width=100)
 
         # TODO: Add double click and single click functionality (single = select, double = open board)
@@ -96,7 +104,8 @@ class Board(tile.Tile):
     def get_save_info(self):
         info = {
             "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
-            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"])
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"]),
+            "uid": self.UID
         }
         return self.ID, info
 
@@ -105,16 +114,20 @@ class Board(tile.Tile):
         self.widget.place_forget()
         self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
 
+        # UID
+        self.UID = save["uid"]
 
+# TODO: save image
 class Image(tile.Tile):
     def __init__(self, root, main, image):
         super(Image, self).__init__()
         self.root = root
         self.image = image
         print(type(self.image))
+        self.UID = uid_manager.get_uid()
 
         # All main widgets are labelled 'self.widget'
-        self.widget = tk.Label(self.root, relief=tk.RIDGE, image=self.image)
+        self.widget = tk2.Label(self.root, self, relief=tk.RIDGE, image=self.image)
         self.widget.place(x=500, y=500)
 
         # TODO: Add single click functionality to select
@@ -149,9 +162,10 @@ class Header(tile.Tile):
         self.root = root
 
         self.ID = 3
+        self.UID = uid_manager.get_uid()
 
         # All main widgets are labelled 'self.widget'
-        self.widget = tk.Entry(self.root, relief=tk.GROOVE, bg=GetSetting("colours.background"), font="Helvetica 20 bold", justify=tk.CENTER)
+        self.widget = tk2.Entry(self.root, self, relief=tk.GROOVE, bg=GetSetting("colours.background"), font="Helvetica 20 bold", justify=tk.CENTER)
         self.widget.place(x=500, y=500, height=50, width=200)
 
         # Add delete option
@@ -175,7 +189,8 @@ class Header(tile.Tile):
         info = {
             "text": (self.widget.get()),
             "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
-            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"])
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"]),
+            "uid": self.UID
         }
         return self.ID, info
 
@@ -188,7 +203,10 @@ class Header(tile.Tile):
         self.widget.place_forget()
         self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
 
+        # UID
+        self.UID = save["uid"]
 
+# TODO: Save class diagrams
 class ClassDiagram(tile.Tile):
     def __init__(self, root, main, title, fields, methods):
         print(title)
@@ -197,7 +215,7 @@ class ClassDiagram(tile.Tile):
         self.root = root
 
         # The main widget is labelled 'self.widget'
-        self.widget = tk.Frame(self.root, relief=tk.RIDGE, bg="#FFFFFF")
+        self.widget = tk2.Frame(self.root, self, relief=tk.RIDGE, bg="#FFFFFF")
         self.widget.place(x=500, y=500, height=400, width=200)
 
         self.header = tk.Label(self.widget, text=title, relief=tk.FLAT, font="Helvetica 20 bold", justify=tk.CENTER, bg="#FFFFFF")
@@ -240,8 +258,18 @@ class JoinedArrow:
         self.root = root
 
         # First and second tiles
-        self.first = firstTile
-        self.second = secondTile
+        try:
+            self.first = firstTile.widget
+            self.second = secondTile.widget
+        except:
+            self.first = firstTile
+            self.second = secondTile
+
+        # Get arrow tiles
+        try: self.firstTile = self.first.parent
+        except: pass
+        try: self.secondTile = self.second.parent
+        except: pass
 
     def Update(self, canvas):
         # Need to check if our co-ordinates are co-ordinates (like (0, 0)) or if they are a widget
@@ -265,3 +293,6 @@ class JoinedArrow:
 
         # Now draw the arrow to the canvas
         canvas.create_line(x0, y0, x1, y1, arrow=tk.LAST, fill="#000000")
+
+    def get_save_data(self):
+        return [self.firstTile.UID, self.secondTile.UID]

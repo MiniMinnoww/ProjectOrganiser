@@ -1,12 +1,13 @@
 from tiles import JoinedArrow
 import tkinter as tk
-
+import tile
 
 class ArrowHandler:
-    def __init__(self, canvas):
+    def __init__(self, canvas, root):
         self.arrows = []
         self.currentStart = None
         self.canvas = canvas
+        self.root = root
 
     def ArrowStart(self, widget):
         # Set current start to the widget where the arrow was started
@@ -25,3 +26,22 @@ class ArrowHandler:
     def Update(self):
         for arrow in self.arrows:
             arrow.Update(self.canvas)
+
+    def get_save_data(self):
+        data = []
+        for arrow in self.arrows:
+            data.append(arrow.get_save_data())
+        return data
+
+    def load_save_data(self, data):
+        if not data: return
+        for arrow in data:
+            # Get first and second tiles
+            firstTileID = arrow[0]
+            secondTileID = arrow[1]
+            firstTile = None
+            secondTile = None
+            for _tile in tile.tiles:
+                if _tile.UID == firstTileID: firstTile = _tile
+                elif _tile.UID == secondTileID: secondTile = _tile
+            self.arrows.append(JoinedArrow(self.root, firstTile, secondTile))
