@@ -4,6 +4,7 @@ import tkinter2 as tk2
 import tkinter as tk
 from info import GetSetting
 import uid_manager
+import math
 
 # Each tile has a ID (self.ID) which is used for save load system.
 
@@ -256,7 +257,8 @@ class JoinedArrow:
     # TODO: Add relative offset from the widgets top corner to place arrows all around the widget.
     def __init__(self, root: tk.Tk, main, firstTile, secondTile):
         self.root = root
-
+        self.offsetFirst = (0, 0)
+        self.offsetSecond = (0, 0)
         # First and second tiles
         try:
             self.first = firstTile.widget
@@ -273,30 +275,67 @@ class JoinedArrow:
 
         if self.first is None or self.second is None:
             main.arrowHandler.arrows.pop(main.arrowHandler.arrows.index(self))
+            return
+
+        # Now we need to calculate offset for both widgets
+        # Firstly, get the position of the center of our first widget
+        x = int(self.first.place_info()["width"]) / 2
+        y = int(self.first.place_info()["height"]) / 2
+        self.offsetFirst = (x, y)
+
+        # Now get position of the center for our second widget
+        x = int(self.second.place_info()["width"]) / 2
+        y = int(self.second.place_info()["height"]) / 2
+        self.offsetSecond = (x, y)
 
     def Update(self, canvas):
-        # Need to check if our co-ordinates are co-ordinates (like (0, 0)) or if they are a widget
-        if type(self.first) == tuple:
-            # It is coordinates of the arrow.
-            x0 = self.first[0]
-            y0 = self.first[0]
-        else:
+        # Get widget position
+        x0 = int(self.first.place_info()["x"])
+        y0 = int(self.first.place_info()["y"])
 
-            # Get widget position
-            x0 = self.first.place_info()["x"]
-            y0 = self.first.place_info()["y"]
-
-        if type(self.second) == tuple:
-            # It is coordinates of the arrow.
-            x1 = self.second[0]
-            y1 = self.second[0]
-        else:
-            # Get widget position
-            x1 = self.second.place_info()["x"]
-            y1 = self.second.place_info()["y"]
-
-        # Now draw the arrow to the canvas
-        canvas.create_line(x0, y0, x1, y1, arrow=tk.LAST, fill="#000000")
+        # Now, use the line_intersection_on_rect to calculate the right position for the arrow
+        coords = line_intersection_on_rect(int(self.second.place_info()["width"]),
+                                           int(self.second.place_info()["height"]),
+                                           int(self.second.place_info()["x"]) + self.offsetSecond[0],
+                                           int(self.second.place_info()["y"]) + self.offsetSecond[1],
+                                           x0 + self.offsetFirst[0],
+                                           x0 + self.offsetFirst[1])
+        canvas.create_line(x0 + self.offsetFirst[0], y0 + self.offsetFirst[1], coords[0], coords[1], arrow=tk.LAST, fill="#000000")
 
     def get_save_data(self):
         return [self.firstTile.UID, self.secondTile.UID]
+
+sign = lambda x: -1 if x < 0 else (1 if x > 0 else (0 if x == 0 else None))
+
+
+# Thanks to https://stackoverflow.com/questions/1585525/how-to-find-the-intersection-point-between-a-line-and-a-rectangle for this part :D
+
+def line_intersection_on_rect(width, height, xB, yB, xA, yA):
+
+  w = width / 2
+  h = height / 2
+
+  dx = xA - xB
+  dy = yA - yB
+
+  ## if A=B return B itself
+  if dx == 0 and dy == 0: return xB, yB
+
+  tan_phi = h / w
+  tan_theta = abs(dy / dx)
+
+  # tell me in which quadrant the A point is
+
+  qx = sign(dx)
+  qy = sign(dy)
+
+
+  if tan_theta > tan_phi:
+    xI = xB + (h / tan_theta) * qx
+    yI = yB + h * qy
+  else:
+    xI = xB + w * qx
+    yI = yB + w * tan_theta * qy
+
+
+  return xI, yI
