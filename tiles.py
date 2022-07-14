@@ -254,7 +254,7 @@ class ClassDiagram(tile.Tile):
 class JoinedArrow:
     # Arrow class
     # TODO: Add relative offset from the widgets top corner to place arrows all around the widget.
-    def __init__(self, root: tk.Tk, firstTile, secondTile):
+    def __init__(self, root: tk.Tk, main, firstTile, secondTile):
         self.root = root
 
         # First and second tiles
@@ -271,6 +271,9 @@ class JoinedArrow:
         try: self.secondTile = self.second.parent
         except: pass
 
+        if self.first is None or self.second is None:
+            main.arrowHandler.arrows.pop(main.arrowHandler.arrows.index(self))
+
     def Update(self, canvas):
         # Need to check if our co-ordinates are co-ordinates (like (0, 0)) or if they are a widget
         if type(self.first) == tuple:
@@ -278,6 +281,7 @@ class JoinedArrow:
             x0 = self.first[0]
             y0 = self.first[0]
         else:
+
             # Get widget position
             x0 = self.first.place_info()["x"]
             y0 = self.first.place_info()["y"]

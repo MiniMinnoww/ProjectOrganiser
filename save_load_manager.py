@@ -23,7 +23,7 @@ def save_data(main):
         save_file.write("")
 
         # Save data
-        json.dump(data, save_file)
+        json.dump(data, save_file, indent=4)
 
 
 def load_data(root, main):
