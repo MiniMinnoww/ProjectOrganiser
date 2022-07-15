@@ -4,7 +4,8 @@ import tkinter2 as tk2
 import tkinter as tk
 from info import GetSetting
 import uid_manager
-import math
+from PIL import Image as PImage
+from PIL import ImageTk
 
 # Each tile has a ID (self.ID) which is used for save load system.
 
@@ -120,16 +121,25 @@ class Board(tile.Tile):
 
 # TODO: save image
 class Image(tile.Tile):
-    def __init__(self, root, main, image):
+    def __init__(self, root, main, filePath=None):
         super(Image, self).__init__()
+        self.filePath = filePath
         self.root = root
-        self.image = image
-        print(type(self.image))
         self.UID = uid_manager.get_uid()
+        self.widget = tk2.Label(self.root, self, relief=tk.RIDGE)
+        self.ID = 4
+        if filePath is not None:
+            _image = PImage.open(self.filePath)
+            _image.thumbnail((300, 300))
+            image = ImageTk.PhotoImage(_image)
+            self.image = image
 
-        # All main widgets are labelled 'self.widget'
-        self.widget = tk2.Label(self.root, self, relief=tk.RIDGE, image=self.image)
-        self.widget.place(x=500, y=500)
+            # All main widgets are labelled 'self.widget'
+
+            self.widget.configure(image=self.image)
+            self.widget.place(x=500, y=500, width=image.width(), height=image.height())
+        else:
+            self.widget.place(x=500, y=500, width=10, height=10)
 
         # TODO: Add single click functionality to select
 
@@ -154,6 +164,31 @@ class Image(tile.Tile):
     def Select(self, _):
         # TODO: Add select option
         pass
+
+    def get_save_info(self):
+        info = {
+            "file-path": self.filePath,
+            "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"]),
+            "uid": self.UID
+        }
+        return self.ID, info
+
+    def load_save_info(self, save):
+        # Image
+        self.filePath = save["file-path"]
+        _image = PImage.open(self.filePath)
+        _image.thumbnail((300, 300))
+        image = ImageTk.PhotoImage(_image)
+        self.image = image
+        self.widget.configure(image=self.image)
+
+        # Position & Dimensions
+        self.widget.place_forget()
+        self.widget.place(x=save["position"][0], y=save["position"][1], height=image.height(), width=image.width())
+
+        # UID
+        self.UID = save["uid"]
 
 
 class Header(tile.Tile):

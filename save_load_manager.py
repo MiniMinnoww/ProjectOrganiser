@@ -6,7 +6,8 @@ id_to_object = {
         0: tiles.Note,
         1: tiles.Board,
         2: None,
-        3: tiles.Header
+        3: tiles.Header,
+        4: tiles.Image
     }
 
 def save_data(main):

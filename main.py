@@ -15,6 +15,8 @@ import arrow_handler
 from class_diagram_gui import ClassDiagramCreatorGUI
 
 from info import GetSetting
+from shutil import copyfile
+import os
 
 # To-Do list.
 
@@ -103,10 +105,9 @@ class Main:
         filePath = fd.askopenfilename(filetypes=[allowedFileExtensions])
 
         # Now load the image
-        _image = Image.open(filePath)
-        _image.thumbnail((300, 300))
-        image = ImageTk.PhotoImage(_image)
-        tile.tiles.append(tiles.Image(self.root, self, image))
+        print(os.getcwd() + "\\images\\" + os.path.basename(filePath))
+        filePath = copyfile(filePath, os.getcwd() + "\\images\\" + os.path.basename(filePath))
+        tile.tiles.append(tiles.Image(self.root, self, filePath))
 
     def CreateClassDiagram(self):
         # Special case for creating a class diagram

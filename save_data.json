@@ -3,8 +3,8 @@
         1,
         {
             "position": [
-                "976",
-                "579"
+                "889",
+                "187"
             ],
             "dimensions": [
                 "100",
@@ -18,8 +18,8 @@
         {
             "text": "",
             "position": [
-                "91",
-                "675"
+                "485",
+                "607"
             ],
             "dimensions": [
                 "50",
@@ -29,9 +29,64 @@
         }
     ],
     [
-        [
-            51536906,
-            429201317
-        ]
-    ]
+        4,
+        {
+            "file-path": "C:\\Users\\fishy\\PycharmProjects\\ProjectOrganiser\\images\\Before.PNG",
+            "position": [
+                "247",
+                "75"
+            ],
+            "dimensions": [
+                "157",
+                "300"
+            ],
+            "uid": 204856670
+        }
+    ],
+    [
+        3,
+        {
+            "text": "hu",
+            "position": [
+                "319",
+                "293"
+            ],
+            "dimensions": [
+                "50",
+                "200"
+            ],
+            "uid": 289800656
+        }
+    ],
+    [
+        4,
+        {
+            "file-path": "C:\\Users\\fishy\\PycharmProjects\\ProjectOrganiser\\images\\Code.PNG",
+            "position": [
+                "885",
+                "597"
+            ],
+            "dimensions": [
+                "95",
+                "300"
+            ],
+            "uid": 540479230
+        }
+    ],
+    [
+        4,
+        {
+            "file-path": "C:\\Users\\fishy\\PycharmProjects\\ProjectOrganiser\\images\\DroneDev1.png",
+            "position": [
+                "922",
+                "325"
+            ],
+            "dimensions": [
+                "188",
+                "300"
+            ],
+            "uid": 107961153
+        }
+    ],
+    []
 ]
