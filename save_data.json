@@ -14,21 +14,6 @@
         }
     ],
     [
-        0,
-        {
-            "text": "",
-            "position": [
-                "485",
-                "607"
-            ],
-            "dimensions": [
-                "50",
-                "200"
-            ],
-            "uid": 51536906
-        }
-    ],
-    [
         4,
         {
             "file-path": "C:\\Users\\fishy\\PycharmProjects\\ProjectOrganiser\\images\\Before.PNG",
@@ -46,10 +31,10 @@
     [
         3,
         {
-            "text": "hu",
+            "text": "Testing :)",
             "position": [
-                "319",
-                "293"
+                "668",
+                "25"
             ],
             "dimensions": [
                 "50",
@@ -63,8 +48,8 @@
         {
             "file-path": "C:\\Users\\fishy\\PycharmProjects\\ProjectOrganiser\\images\\Code.PNG",
             "position": [
-                "885",
-                "597"
+                "507",
+                "518"
             ],
             "dimensions": [
                 "95",
@@ -78,14 +63,58 @@
         {
             "file-path": "C:\\Users\\fishy\\PycharmProjects\\ProjectOrganiser\\images\\DroneDev1.png",
             "position": [
-                "922",
-                "325"
+                "556",
+                "275"
             ],
             "dimensions": [
                 "188",
                 "300"
             ],
             "uid": 107961153
+        }
+    ],
+    [
+        5,
+        {
+            "position": [
+                "1133",
+                "110"
+            ],
+            "dimensions": [
+                "400",
+                "200"
+            ],
+            "name": "e",
+            "fields": [
+                "private e e"
+            ],
+            "methods": [
+                "virtual e e ()"
+            ],
+            "uid": 800851949
+        }
+    ],
+    [
+        5,
+        {
+            "position": [
+                "211",
+                "392"
+            ],
+            "dimensions": [
+                "400",
+                "200"
+            ],
+            "name": "Dog",
+            "fields": [
+                "private float  height",
+                "private float mass",
+                "private bool isAlive"
+            ],
+            "methods": [
+                "public void Bark (float volume, float pitch)"
+            ],
+            "uid": 143309111
         }
     ],
     []

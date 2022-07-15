@@ -119,7 +119,7 @@ class Board(tile.Tile):
         # UID
         self.UID = save["uid"]
 
-# TODO: save image
+
 class Image(tile.Tile):
     def __init__(self, root, main, filePath=None):
         super(Image, self).__init__()
@@ -244,11 +244,13 @@ class Header(tile.Tile):
 
 # TODO: Save class diagrams
 class ClassDiagram(tile.Tile):
-    def __init__(self, root, main, title, fields, methods):
+    def __init__(self, root, main, title="", fields="", methods=""):
         print(title)
         super(ClassDiagram, self).__init__()
 
         self.root = root
+        self.ID = 5
+        self.UID = uid_manager.get_uid()
 
         # The main widget is labelled 'self.widget'
         self.widget = tk2.Frame(self.root, self, relief=tk.RIDGE, bg="#FFFFFF")
@@ -257,12 +259,12 @@ class ClassDiagram(tile.Tile):
         self.header = tk.Label(self.widget, text=title, relief=tk.FLAT, font="Helvetica 20 bold", justify=tk.CENTER, bg="#FFFFFF")
         self.header.pack()
 
-        self.fields = tk.Listbox(self.widget, relief=tk.RIDGE, width=50)
+        self.fields = tk.Listbox(self.widget, relief=tk.FLAT, width=50)
         for field in fields:
             self.fields.insert(tk.END, field)
         self.fields.pack(fill=tk.BOTH, expand=True)
 
-        self.methods = tk.Listbox(self.widget, relief=tk.RIDGE, width=50)
+        self.methods = tk.Listbox(self.widget, relief=tk.FLAT, width=50)
         for method in methods:
             self.methods.insert(tk.END, method)
         self.methods.pack(fill=tk.BOTH, expand=True)
@@ -285,6 +287,31 @@ class ClassDiagram(tile.Tile):
         # Delete
         tile.tiles.pop(tile.tiles.index(self))
         self.widget.destroy()
+
+    def get_save_info(self):
+        info = {
+            "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"]),
+            "name": self.header.cget("text"),
+            "fields": self.fields.get(0, tk.END),
+            "methods": self.methods.get(0, tk.END),
+            "uid": self.UID
+        }
+        return self.ID, info
+
+    def load_save_info(self, save):
+        # Position & Dimensions
+        self.widget.place_forget()
+        self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0],
+                          width=save["dimensions"][1])
+
+        # Text
+        self.header.configure(text=save["name"])
+        for field in save["fields"]: self.fields.insert(tk.END, field)
+        for method in save["methods"]: self.methods.insert(tk.END, method)
+
+        # UID
+        self.UID = save["uid"]
 
 
 class JoinedArrow:
