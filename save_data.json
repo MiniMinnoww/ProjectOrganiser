@@ -63,7 +63,7 @@
         {
             "file-path": "C:\\Users\\fishy\\PycharmProjects\\ProjectOrganiser\\images\\DroneDev1.png",
             "position": [
-                "556",
+                "563",
                 "275"
             ],
             "dimensions": [
@@ -115,6 +115,37 @@
                 "public void Bark (float volume, float pitch)"
             ],
             "uid": 143309111
+        }
+    ],
+    [
+        2,
+        {
+            "text": "erf",
+            "ticked": 1,
+            "position": [
+                "892",
+                "335"
+            ],
+            "dimensions": [
+                "50",
+                "200"
+            ],
+            "uid": 358544277
+        }
+    ],
+    [
+        0,
+        {
+            "text": "",
+            "position": [
+                "1157",
+                "566"
+            ],
+            "dimensions": [
+                "50",
+                "200"
+            ],
+            "uid": 515329170
         }
     ],
     []

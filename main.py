@@ -26,11 +26,9 @@ import os
     # Export board to pdf
     # Add settings in toolbar when widget selected
 # Tiles to make:
-    # UML class diagrams
     # Flow chart symbols
     # 3D models?
     # Links
-    # To-Do lists
     # Columns (to store other widgets)
     # Colours
     # Document links
@@ -72,6 +70,9 @@ class Main:
 
         self.boardButton = tk.Button(self.toolbar, text="Board", command=lambda: self.Create(tiles.Board))
         self.boardButton.pack()
+
+        self.todoButton = tk.Button(self.toolbar, text="To-Do", command=lambda: self.Create(tiles.ToDo))
+        self.todoButton.pack()
 
         self.headerButton = tk.Button(self.toolbar, text="Header", command=lambda: self.Create(tiles.Header))
         self.headerButton.pack()

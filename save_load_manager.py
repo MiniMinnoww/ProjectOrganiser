@@ -5,7 +5,7 @@ import json
 id_to_object = {
         0: tiles.Note,
         1: tiles.Board,
-        2: None,
+        2: tiles.ToDo,
         3: tiles.Header,
         4: tiles.Image,
         5: tiles.ClassDiagram

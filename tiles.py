@@ -60,6 +60,70 @@ class Note(tile.Tile):
         self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
 
 
+class ToDo(tile.Tile):
+    def __init__(self, root, main):
+        super(ToDo, self).__init__()
+
+        self.root = root
+        self.ID = 2
+        self.UID = uid_manager.get_uid()
+
+        # All main widgets are labelled 'self.widget'
+        self.widget = tk2.Frame(self.root, self, relief=tk.RIDGE, bg="#FFFFFF")
+        self.widget.place(x=500, y=500, height=50, width=200)
+
+        self.ticked = tk.IntVar()
+
+        self.entry = tk2.Entry(self.widget, self, relief=tk.FLAT, bg="#FFFFFF")
+        self.entry.grid(row=0, column=1, ipady=15, ipadx=25)
+
+        self.tick = tk.Checkbutton(self.widget, variable=self.ticked, bg="#FFFFFF")
+        self.tick.grid(row=0, column=0)
+
+        # Add delete option
+        self.widget.bind("<Delete>", self.Delete)
+
+        # Add right click detection to add arrows
+        self.widget.bind("<ButtonPress-3>", lambda _: main.OnArrowStart(self.widget))
+        self.widget.bind("<ButtonRelease-3>", lambda _: main.OnArrowStop())
+
+        # Add dragging capability
+        self.dragManager = DragManager(self.widget)
+        self.dragManager.AddDraggable(self.widget)
+        self.dragManager.AddDraggable(self.tick)
+        self.dragManager.AddDraggable(self.entry)
+
+    def Delete(self, _):
+        # Check if delete is to delete the tile, or just the text (by seeing if there is text current in it)
+        if self.entry.get() == "":
+            tile.tiles.pop(tile.tiles.index(self))
+            self.widget.destroy()
+
+    def get_save_info(self):
+        info = {
+            "text": self.entry.get(),
+            "ticked": self.ticked.get(),
+            "position": (self.widget.place_info()["x"], self.widget.place_info()["y"]),
+            "dimensions": (self.widget.place_info()["height"], self.widget.place_info()["width"]),
+            "uid": self.UID
+        }
+        return self.ID, info
+
+    def load_save_info(self, save):
+        # Text
+        self.entry.delete(0, tk.END)
+        self.entry.insert(0, save["text"])
+
+        self.ticked.set(save["ticked"])
+
+        # UID
+        self.UID = save["uid"]
+
+        # Position & Dimensions
+        self.widget.place_forget()
+        self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
+
+
 class Board(tile.Tile):
     def __init__(self, root, main):
         super(Board, self).__init__()
