@@ -87,6 +87,12 @@ class ToDo(tile.Tile):
         self.widget.bind("<ButtonPress-3>", lambda _: main.OnArrowStart(self.widget))
         self.widget.bind("<ButtonRelease-3>", lambda _: main.OnArrowStop())
 
+        self.entry.bind("<ButtonPress-3>", lambda _: main.OnArrowStart(self.widget))
+        self.entry.bind("<ButtonRelease-3>", lambda _: main.OnArrowStop())
+
+        self.tick.bind("<ButtonPress-3>", lambda _: main.OnArrowStart(self.widget))
+        self.tick.bind("<ButtonRelease-3>", lambda _: main.OnArrowStop())
+
         # Add dragging capability
         self.dragManager = DragManager(self.widget)
         self.dragManager.AddDraggable(self.widget)
@@ -426,7 +432,7 @@ class JoinedArrow:
                                            int(self.second.place_info()["y"]) + self.offsetSecond[1],
                                            x0 + self.offsetFirst[0],
                                            x0 + self.offsetFirst[1])
-        canvas.create_line(x0 + self.offsetFirst[0], y0 + self.offsetFirst[1], coords[0], coords[1], arrow=tk.LAST, fill="#000000")
+        canvas.create_line(x0 + self.offsetFirst[0], y0 + self.offsetFirst[1], coords[0], coords[1], arrow=tk.LAST, fill="#000000", width=2)
 
     def get_save_data(self):
         return [self.firstTile.UID, self.secondTile.UID]

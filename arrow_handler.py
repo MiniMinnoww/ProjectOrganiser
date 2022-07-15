@@ -17,12 +17,10 @@ class ArrowHandler:
     def ArrowEnd(self, root: tk.Tk):
         # Get the widget under the mouse
         widget = root.winfo_containing(root.winfo_pointerx(), root.winfo_pointery())
-        if widget == self.canvas:
-            # This means the arrow was draw to no widget, so just put it at the mouse pointer position
-            self.arrows.append(JoinedArrow(root, self.currentStart, (root.winfo_pointerx(), root.winfo_pointery())))
-        else:
+        if widget != self.canvas:
             # Make the arrows target a widget
             self.arrows.append(JoinedArrow(root, self.main, self.currentStart, widget))
+
 
     def Update(self):
         for arrow in self.arrows:
@@ -48,5 +46,5 @@ class ArrowHandler:
                 for _tile in tile.tiles:
                     if _tile.UID == firstTileID: firstTile = _tile
                     elif _tile.UID == secondTileID: secondTile = _tile
-                self.arrows.append(JoinedArrow(self.root, firstTile, secondTile))
+                self.arrows.append(JoinedArrow(self.root, self.main, firstTile, secondTile))
             except: pass

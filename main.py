@@ -124,7 +124,7 @@ class Main:
         # Update arrows
         self.arrowHandler.Update()
 
-        # Re-update for 10 ms
+        # Re-update for 20 ms
         self.root.after(20, self.Update)
 
     def OnArrowStart(self, widget):

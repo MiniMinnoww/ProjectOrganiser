@@ -43,5 +43,6 @@ def load_data(root, main):
             tile.tiles.append(id_to_object[ID](root, main))
             tile.tiles[index].load_save_info(data[1])
 
-        print(info[-1])
-        main.arrowHandler.load_save_data(info[-1])
+
+        try: main.arrowHandler.load_save_data(info[-1])
+        except: pass
