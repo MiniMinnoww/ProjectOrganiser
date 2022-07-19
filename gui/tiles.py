@@ -1,15 +1,15 @@
-import tile
-from draggable_object import *
-import tkinter2 as tk2
+import info
+from backend.draggable_object import *
+from backend import tkinter2 as tk2
 import tkinter as tk
 from info import GetSetting
-import uid_manager
+from handlers import uid_manager
 from PIL import Image as PImage
 from PIL import ImageTk
 
-# Each tile has a ID (self.ID) which is used for save load system.
+# Each tile has an ID (self.ID) which is used for save load system.
 
-class Note(tile.Tile):
+class Note:
     def __init__(self, root, main):
         super(Note, self).__init__()
 
@@ -35,7 +35,7 @@ class Note(tile.Tile):
     def Delete(self, _):
         # Check if delete is to delete the tile, or just the text (by seeing if there is text current in it)
         if self.widget.get() == "":
-            tile.tiles.pop(tile.tiles.index(self))
+            info.tiles.pop(info.tiles.index(self))
             self.widget.destroy()
 
     def get_save_info(self):
@@ -60,7 +60,7 @@ class Note(tile.Tile):
         self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
 
 
-class ToDo(tile.Tile):
+class ToDo:
     def __init__(self, root, main):
         super(ToDo, self).__init__()
 
@@ -102,7 +102,7 @@ class ToDo(tile.Tile):
     def Delete(self, _):
         # Check if delete is to delete the tile, or just the text (by seeing if there is text current in it)
         if self.entry.get() == "":
-            tile.tiles.pop(tile.tiles.index(self))
+            info.tiles.pop(info.tiles.index(self))
             self.widget.destroy()
 
     def get_save_info(self):
@@ -130,7 +130,7 @@ class ToDo(tile.Tile):
         self.widget.place(x=save["position"][0], y=save["position"][1], height=save["dimensions"][0], width=save["dimensions"][1])
 
 
-class Board(tile.Tile):
+class Board:
     def __init__(self, root, main):
         super(Board, self).__init__()
         self.root = root
@@ -162,7 +162,7 @@ class Board(tile.Tile):
         self.dragManager.AddDraggable(self.widget)
 
     def Delete(self, _):
-        tile.tiles.pop(tile.tiles.index(self))
+        info.tiles.pop(info.tiles.index(self))
         self.widget.destroy()
 
     def Select(self, _):
@@ -190,7 +190,7 @@ class Board(tile.Tile):
         self.UID = save["uid"]
 
 
-class Image(tile.Tile):
+class Image:
     def __init__(self, root, main, filePath=None):
         super(Image, self).__init__()
         self.filePath = filePath
@@ -228,7 +228,7 @@ class Image(tile.Tile):
         self.dragManager.AddDraggable(self.widget)
 
     def Delete(self, _):
-        tile.tiles.pop(tile.tiles.index(self))
+        info.tiles.pop(info.tiles.index(self))
         self.widget.destroy()
 
     def Select(self, _):
@@ -261,7 +261,7 @@ class Image(tile.Tile):
         self.UID = save["uid"]
 
 
-class Header(tile.Tile):
+class Header:
     def __init__(self, root, main):
         super(Header, self).__init__()
 
@@ -288,7 +288,7 @@ class Header(tile.Tile):
     def Delete(self, _):
         # Check if delete is to delete the tile, or just the text (by seeing if there is text current in it)
         if self.widget.get() == "":
-            tile.tiles.pop(tile.tiles.index(self))
+            info.tiles.pop(info.tiles.index(self))
             self.widget.destroy()
 
     def get_save_info(self):
@@ -313,7 +313,7 @@ class Header(tile.Tile):
         self.UID = save["uid"]
 
 # TODO: Save class diagrams
-class ClassDiagram(tile.Tile):
+class ClassDiagram:
     def __init__(self, root, main, title="", fields="", methods=""):
         print(title)
         super(ClassDiagram, self).__init__()
@@ -355,7 +355,7 @@ class ClassDiagram(tile.Tile):
 
     def Delete(self, _):
         # Delete
-        tile.tiles.pop(tile.tiles.index(self))
+        info.tiles.pop(info.tiles.index(self))
         self.widget.destroy()
 
     def get_save_info(self):
@@ -386,7 +386,6 @@ class ClassDiagram(tile.Tile):
 
 class JoinedArrow:
     # Arrow class
-    # TODO: Add relative offset from the widgets top corner to place arrows all around the widget.
     def __init__(self, root: tk.Tk, main, firstTile, secondTile):
         self.root = root
         self.offsetFirst = (0, 0)
@@ -405,6 +404,8 @@ class JoinedArrow:
         try: self.secondTile = self.second.parent
         except: pass
 
+        self.main = main
+
         if self.first is None or self.second is None:
             main.arrowHandler.arrows.pop(main.arrowHandler.arrows.index(self))
             return
@@ -422,8 +423,13 @@ class JoinedArrow:
 
     def Update(self, canvas):
         # Get widget position
-        x0 = int(self.first.place_info()["x"])
-        y0 = int(self.first.place_info()["y"])
+        try:
+            x0 = int(self.first.place_info()["x"])
+            y0 = int(self.first.place_info()["y"])
+        except:
+            # One of our widgets has been deleted, destroy the arrow
+            self.main.arrowHandler.arrows.pop(self.main.arrowHandler.arrows.index(self))
+            return
 
         # Now, use the line_intersection_on_rect to calculate the right position for the arrow
         coords = line_intersection_on_rect(int(self.second.place_info()["width"]),
@@ -454,7 +460,8 @@ def line_intersection_on_rect(width, height, xB, yB, xA, yA):
   if dx == 0 and dy == 0: return xB, yB
 
   tan_phi = h / w
-  tan_theta = abs(dy / dx)
+  if dx == 0: tan_theta = 0
+  else: tan_theta = abs(dy / dx)
 
   # tell me in which quadrant the A point is
 

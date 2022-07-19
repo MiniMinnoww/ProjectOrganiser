@@ -1,6 +1,6 @@
-from tiles import JoinedArrow
+from gui.tiles import JoinedArrow
 import tkinter as tk
-import tile
+import info
 
 class ArrowHandler:
     def __init__(self, canvas, root, main):
@@ -43,7 +43,7 @@ class ArrowHandler:
                 secondTileID = arrow[1]
                 firstTile = None
                 secondTile = None
-                for _tile in tile.tiles:
+                for _tile in info.tiles:
                     if _tile.UID == firstTileID: firstTile = _tile
                     elif _tile.UID == secondTileID: secondTile = _tile
                 self.arrows.append(JoinedArrow(self.root, self.main, firstTile, secondTile))

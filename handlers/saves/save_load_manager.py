@@ -1,5 +1,5 @@
-import tile
-import tiles
+import info
+from gui import tiles
 import json
 
 id_to_object = {
@@ -16,11 +16,11 @@ def save_data(main):
     # Most of the incoming data will be from the tiles get_save_info() method itself
     data = []
 
-    for _tile in tile.tiles:
+    for _tile in info.tiles:
         data.append(_tile.get_save_info())
     data.append(main.arrowHandler.get_save_data())
 
-    with open("save_data.json", "w") as save_file:
+    with open("json/saves/save_data.json", "w") as save_file:
         # Clear file
         save_file.write("")
 
@@ -29,20 +29,20 @@ def save_data(main):
 
 
 def load_data(root, main):
-    with open("save_data.json", "r") as save_file:
-        try: info = json.load(save_file)
+    with open("json/saves/save_data.json", "r") as save_file:
+        try: data = json.load(save_file)
         except: return
         # Need to loop through all the parts in dictionary, and get their tile ID. Then, create their object.
-        for index, data in enumerate(info):
+        for index, _data in enumerate(data):
             # If its arrow info, then ignore it
-            if index == len(info) - 1: continue
+            if index == len(data) - 1: continue
             # Get its ID
-            ID = data[0]
+            ID = _data[0]
 
             # Create object
-            tile.tiles.append(id_to_object[ID](root, main))
-            tile.tiles[index].load_save_info(data[1])
+            info.tiles.append(id_to_object[ID](root, main))
+            info.tiles[index].load_save_info(_data[1])
 
 
-        try: main.arrowHandler.load_save_data(info[-1])
+        try: main.arrowHandler.load_save_data(data[-1])
         except: pass

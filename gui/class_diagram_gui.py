@@ -1,7 +1,7 @@
 import tkinter as tk
 from info import GetSetting
-import tiles
-import tile
+from gui import tiles
+import info
 
 class ClassDiagramCreatorGUI(tk.Toplevel):
     def __init__(self, root, main):
@@ -9,7 +9,7 @@ class ClassDiagramCreatorGUI(tk.Toplevel):
         super(ClassDiagramCreatorGUI, self).__init__(root)
 
         # TopLevel settings
-        self.resizable(0, 0)
+        self.resizable(False, False)
         self.title("Create Class")
 
         # Initialise variables
@@ -144,7 +144,7 @@ class ClassDiagramCreatorGUI(tk.Toplevel):
         for method in self.methods: methods.append(method.__repr__())
 
         # Create Class Diagram
-        tile.tiles.append(tiles.ClassDiagram(self.root, self.main, self.title_entry.get(), fields, methods))
+        info.tiles.append(tiles.ClassDiagram(self.root, self.main, self.title_entry.get(), fields, methods))
 
         # Delete TopLevel
         self.destroy()

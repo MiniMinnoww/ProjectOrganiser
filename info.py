@@ -1,7 +1,9 @@
 # A place to get all the central info and objects
 import json
 
-settings = json.load(open("settings.json", "r"))
+tiles = []
+
+settings = json.load(open("json/settings.json", "r"))
 
 def GetSetting(jsonString):
     new = settings

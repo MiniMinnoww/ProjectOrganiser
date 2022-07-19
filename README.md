@@ -10,18 +10,18 @@ To run it just run main.py and it should work.
 - Add notes
 - Add boards
 - Draw arrows between components
+- Add class diagrams
+- Add images
+- Add to-do items
 
 ## What it will be able to do
 - Have tiles such as
-  - Class diagrams (UML notation)
   - Flowchart symbols
-  - Images
   - Videos
   - Audio
   - Colours
   - Links
   - Columns
-  - To-Do lists
   - 3D models
 - Save/Load system
 - Export pages to .pdf

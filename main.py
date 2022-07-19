@@ -5,14 +5,13 @@ This is a project planning desktop app in python using tkinter, which is aimed a
 
 import tkinter as tk
 from tkinter import filedialog as fd
-from PIL import Image,ImageTk
 
-import tiles
-import tile
-import save_load_manager
+from gui import tiles
+import info
+from handlers.saves import save_load_manager
 
-import arrow_handler
-from class_diagram_gui import ClassDiagramCreatorGUI
+from handlers import arrow_handler
+from gui.class_diagram_gui import ClassDiagramCreatorGUI
 
 from info import GetSetting
 from shutil import copyfile
@@ -40,7 +39,7 @@ import os
 # Other touches:
     # Make class diagrams have a 'colour' mode, which replaces things like +/-/# and other characters with colours for a nicer view
     # Allow customisation of colours to the top of tiles
-    # Allow labels to arrows
+    # Allow labels on arrows
     # Allow resizing of images
     # Make text boxes auto resize
 
@@ -96,7 +95,7 @@ class Main:
 
     def Create(self, _tile):
         # Create a tile
-        tile.tiles.append(_tile(self.root, self))
+        info.tiles.append(_tile(self.root, self))
 
     def CreateImage(self):
         # Special case for creating an image (we need a file select box to come up)
@@ -108,7 +107,7 @@ class Main:
         # Now load the image
         print(os.getcwd() + "\\images\\" + os.path.basename(filePath))
         filePath = copyfile(filePath, os.getcwd() + "\\images\\" + os.path.basename(filePath))
-        tile.tiles.append(tiles.Image(self.root, self, filePath))
+        info.tiles.append(tiles.Image(self.root, self, filePath))
 
     def CreateClassDiagram(self):
         # Special case for creating a class diagram
